@@ -6,6 +6,8 @@ from .tasks import event_notify
 
 @receiver(post_save, sender=Event, dispatch_uid='send_mail')
 def event_handler(sender, instance, **kwargs):
-    email = instance.author.email
-    date_when_send_mail = instance.get_date_when_send_mail()
-    event_notify.delay()
+    # TODO: Change from countdown to eta in future
+    seconds_to_send_mail = instance.get_seconds_to_send_mail()
+
+    event_notify.apply_async((instance.author.email, instance.title, instance.how_many_minutes),
+                             countdown=seconds_to_send_mail)

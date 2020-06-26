@@ -146,10 +146,12 @@ SIMPLE_JWT = {
 }
 
 ########### mail #######
-
-DEFAULT_FROM_EMAIL = 'shvidkiy.dmitriy@gmail.com'
+DEFAULT_MAIL = 'reminder.reminder@mail.ru'
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = 2525
+EMAIL_HOST_USER = "reminder.reminder@mail.ru"
+EMAIL_HOST_PASSWORD = "19960213Za"
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'shvidkiy.dmitriy@gmail.com'
-EMAIL_HOST_PASSWORD = '19960213Za'
+
+
+CELERY_ALWAYS_EAGER = False
