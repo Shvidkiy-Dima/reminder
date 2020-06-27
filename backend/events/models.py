@@ -13,6 +13,9 @@ class Event(models.Model):
     how_many_minutes = models.IntegerField(default=60)
     #type = ''
 
+    def is_gone(self):
+        return now() > self.date
+
     def get_seconds_to_send_mail(self):
         date_when_send = self.date - timedelta(minutes=self.how_many_minutes)
         return (date_when_send - now()).seconds if date_when_send > now() else 0

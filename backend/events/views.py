@@ -15,3 +15,6 @@ class EventView(ModelViewSet):
 
     def get_queryset(self):
         return self.request.user.my_events.all()
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)

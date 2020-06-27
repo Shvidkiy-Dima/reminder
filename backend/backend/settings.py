@@ -43,12 +43,14 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'django_filters',
-    'djoser'
+    'djoser',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -153,5 +155,9 @@ EMAIL_HOST_USER = "reminder.reminder@mail.ru"
 EMAIL_HOST_PASSWORD = "19960213Za"
 EMAIL_USE_TLS = True
 
-
+########### celery
 CELERY_ALWAYS_EAGER = False
+
+
+######### CORS
+CORS_ORIGIN_ALLOW_ALL = True
