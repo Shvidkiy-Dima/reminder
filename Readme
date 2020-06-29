@@ -3,3 +3,6 @@
 
 ### Deploy
 *docker-compose up --build
+
+### About
+A simple service that sends notifications to your mail an hour before the event
