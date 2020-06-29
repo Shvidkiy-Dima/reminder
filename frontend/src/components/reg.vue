@@ -3,8 +3,8 @@
         <h1>Login</h1>
         <input type="text" name="username" v-model="username" placeholder="Username" />
         <input type="password" name="password" v-model="password" placeholder="Password" />
-        <button type="button" v-on:click="login()">Login</button>
-        <router-link to='/registration'/>
+        <input type="email" name="email" v-model="email" placeholder="Email" />
+        <button type="button" v-on:click="reg()">Registration</button>
     </div>
 </template>
 
@@ -16,20 +16,20 @@ import axios from 'axios'
         data() {
             return {
                     username: "",
-                    password: ""
+                    password: "",
+                    email: ""
 
             }
         },
         methods: {
-            login() {
-                axios.post('http://localhost:8000/auth/jwt/create/',
+            reg() {
+                axios.post('http://localhost:8000/auth/users/',
               {
               username: this.username,
-              password: this.password
-            }).then(res => {
-                sessionStorage.setItem('access', res.data.access)
-                sessionStorage.setItem('refresh', res.data.refresh)
-                this.$router.replace({ name: "events" });
+              password: this.password,
+              email: this.email
+            }).then(() => {
+                this.$router.replace({ name: "login" });
               });
             }
         }

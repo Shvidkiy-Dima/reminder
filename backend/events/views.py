@@ -12,7 +12,6 @@ class EventView(ModelViewSet):
     serializer_class = EventSerializer
     filterset_class = EventFilter
 
-
     def get_queryset(self):
         return self.request.user.my_events.all()
 

@@ -84,8 +84,11 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('BD_NAME', 'test_db'),
+        'USER': os.environ.get('BD_USER', 'admin'),
+        'PASSWORD': os.environ.get('BD_PASSWORD', 'admin'),
+        'HOST': os.environ.get('BD_HOST', 'localhost'),
     }
 }
 
@@ -148,16 +151,17 @@ SIMPLE_JWT = {
 }
 
 ########### mail #######
-DEFAULT_MAIL = 'reminder.reminder@mail.ru'
-EMAIL_HOST = 'smtp.mail.ru'
-EMAIL_PORT = 2525
-EMAIL_HOST_USER = "reminder.reminder@mail.ru"
-EMAIL_HOST_PASSWORD = "19960213Za"
+DEFAULT_MAIL = os.environ.get('DEFAULT_MAIL', 'reminder.reminder@mail.ru')
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.mail.ru')
+EMAIL_PORT = os.environ.get('EMAIL_PORT', 2525)
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER ', "reminder.reminder@mail.ru")
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', "19960213Za")
 EMAIL_USE_TLS = True
 
 ########### celery
 CELERY_ALWAYS_EAGER = False
-
+CELERY_BROKER_HOST = os.environ.get('CELERY_BROKER', 'localhost')
+CELERY_BROKER_URL = 'pyamqp://guest@'+ CELERY_BROKER_HOST + '//'
 
 ######### CORS
 CORS_ORIGIN_ALLOW_ALL = True

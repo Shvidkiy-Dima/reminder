@@ -1,0 +1,45 @@
+version: '3'
+services:
+
+  backend:
+    build: ./backend
+    image: backend
+    depends_on:
+        - db
+        - rabbit
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - BD_HOST=db
+      - CELERY_BROKER=rabbit
+
+  frontend:
+    build: ./frontend
+    image: frontend
+    depends_on:
+        - backend
+    ports:
+      - "8080:8080"
+
+  rabbit:
+    hostname: rabbit
+    image: rabbitmq:latest
+
+  celery:
+    image: backend
+    environment:
+    - CELERY_BROKER=rabbit
+    depends_on:
+      - rabbit
+      - backend
+    command: /bin/bash -c "exec celery -A backend worker -l info"
+
+  db:
+    hostname: db
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=test_db
