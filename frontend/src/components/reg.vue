@@ -1,10 +1,42 @@
 <template>
-    <div id="login">
-        <h1>Login</h1>
-        <input type="text" name="username" v-model="username" placeholder="Username" />
-        <input type="password" name="password" v-model="password" placeholder="Password" />
-        <input type="email" name="email" v-model="email" placeholder="Email" />
-        <button type="button" v-on:click="reg()">Registration</button>
+    <div id="reg">
+        <form>
+            <h2 class="text-center">Registration</h2>
+
+
+
+            <div class="form-group row">
+              <div class="col-sm-7">
+                <input v-model="username"  required="required" type="text" class="form-control" id="inputUsername" placeholder="Username">
+              </div>
+              <div v-if="error.username">
+                  <small v-for="(err, index) in error.username" :key="index" class="text-danger">
+                        {{err}}
+                  </small>
+              </div>
+            </div>
+
+
+
+            <div class="form-group row">
+              <div class="col-sm-7">
+                <input v-model="password"  required="required" type="password" class="form-control" id="inputPassword" placeholder="Password">
+              </div>
+              <div v-if="error.password">
+                  <small v-for="(err, index) in error.password" :key="index" class="text-danger">
+                        {{err}}
+                  </small>
+              </div>
+            </div>
+
+            <div class="form-group">
+                <input type="email" class="form-control" placeholder="Email" v-model="email" required="required">
+            </div>
+            <div class="form-group">
+                <button v-on:click="reg()" class="btn btn-primary btn-block">Create Account</button>
+            </div>
+        </form>
+
     </div>
 </template>
 
@@ -12,9 +44,13 @@
 import axios from 'axios'
 
     export default {
-        name: 'Login',
+        name: 'Reg',
         data() {
             return {
+              error: {
+                  username: [],
+                  password: []
+              },
                     username: "",
                     password: "",
                     email: ""
@@ -30,14 +66,21 @@ import axios from 'axios'
               email: this.email
             }).then(() => {
                 this.$router.replace({ name: "login" });
-              });
+              },
+            (error)=>{
+              if (error.response){
+                this.error.username = error.response.data.username
+                this.error.password = error.response.data.password
+              }
+              console.log(error.response)
+            });
             }
         }
     }
 </script>
 
 <style scoped>
-    #login {
+    #reg {
         width: 500px;
         border: 1px solid #CCCCCC;
         background-color: #FFFFFF;

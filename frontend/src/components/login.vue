@@ -1,11 +1,27 @@
 <template>
     <div id="login">
-        <h1>Login</h1>
-        <input type="text" name="username" v-model="username" placeholder="Username" />
-        <input type="password" name="password" v-model="password" placeholder="Password" />
-        <button type="button" v-on:click="login()">Login</button>
-        <router-link to='/registration'>Registration</router-link>
+    <form>
+        <h2 class="text-center">Log in</h2>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Username" v-model="username"  required="required">
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" placeholder="Password" v-model="password" required="required">
+        </div>
+        <div class="form-group">
+            <button @click="login()" class="btn btn-primary btn-block">Log in</button>
+        </div>
+    </form>
+      <div v-if="error.status">
+          <small id="passwordHelp" class="text-danger">
+                {{error.msg}}
+          </small>
+      </div>
+    <p class="text-center"><router-link to='/registration'>Create an Account</router-link></p>
+
+
     </div>
+
 </template>
 
 <script>
@@ -15,6 +31,10 @@ import axios from 'axios'
         name: 'Login',
         data() {
             return {
+                    error: {
+                        status: false,
+                        msg: ''
+                    },
                     username: "",
                     password: ""
 
@@ -30,7 +50,16 @@ import axios from 'axios'
                 sessionStorage.setItem('access', res.data.access)
                 sessionStorage.setItem('refresh', res.data.refresh)
                 this.$router.replace({ name: "events" });
-              });
+              },
+            (error)=>{
+              this.error.status = true
+              if (error.response) {
+                    this.error.msg = error.response.data.detail
+                    }
+             else {
+                  this.error.msg = error.message
+                  }
+            });
             }
         }
     }
