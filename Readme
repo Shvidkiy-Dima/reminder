@@ -3,6 +3,7 @@
 
 ### Deploy
 *docker-compose up --build
+* Go to http://localhost:8080
 
 ### About
 A simple service that sends notifications to your mail an hour before the event
