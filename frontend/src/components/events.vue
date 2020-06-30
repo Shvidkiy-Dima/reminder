@@ -72,6 +72,7 @@
               </table>
             </div>
           </div>
+
           <b-modal ref="addEventModal"
             id="event-modal"
             title="Add a new event"
@@ -115,6 +116,24 @@
           <b-form-input v-model="addForm.time" class="form-control" type="time" id="form-time-add-input">
           </b-form-input>
         </div>
+        </b-form-group>
+
+        <b-form-group id="form-before-add-group"
+                      label="Send minutes before"
+                      required
+                      label-for="form-before-add-input">
+        <div class="col-2">
+          <b-form-input v-model="addForm.send_minutes_before" class="form-control" type="text" id="form-before-add-input">
+          </b-form-input>
+        </div>
+        </b-form-group>
+
+        <b-form-group id="form-before-edit-group"
+                      label="Email"
+                      required
+                      label-for="form-before-edit-input">
+        <h6>{{user_email}}</h6>
+        <small><router-link to="/settings">change mail</router-link></small>
         </b-form-group>
 
 
@@ -168,6 +187,19 @@
           </b-form-input>
         </div>
         </b-form-group>
+
+        <b-form-group id="form-before-edit-group"
+                      label="Send minutes before"
+                      required
+                      label-for="form-before-edit-input">
+        <div class="col-2">
+          <b-form-input v-model="editForm.send_minutes_before" class="form-control" type="text" id="form-before-edit-input">
+          </b-form-input>
+        </div>
+        </b-form-group>
+
+
+
       <b-button-group>
         <b-button @click="onUpdateEvent()" variant="primary">Update</b-button>
         <b-button @click="onResetUpdateEvent()" variant="danger">Cancel</b-button>
@@ -189,6 +221,7 @@ import Request from '../utils/request'
             return {
                 count: 0,
                 events: [],
+                user_email: '',
                 eventFilter: {
                   title: '',
                   creation_date: ''
@@ -198,14 +231,18 @@ import Request from '../utils/request'
                   title: '',
                   body: '',
                   date: '',
-                  time: '00:00:00'
+                  time: '00:00:00',
+                  send_minutes_before: 60
+
                 },
                 editForm: {
                   id: '',
                   title: '',
                   body: '',
                   date: '',
-                  time: ''
+                  time: '',
+
+                  send_minutes_before: ''
                 },
             }
         },
@@ -216,6 +253,12 @@ import Request from '../utils/request'
             },
             created(){
                 this.getEvents()
+                Request({
+                  method: 'get',
+                  url: 'http://localhost:8000/auth/users/me/'
+                },(res)=>{
+                    this.user_email = res.data.email
+                })
             },
       methods: {
                 formatDate(d){
@@ -233,6 +276,7 @@ import Request from '../utils/request'
                   this.editForm.title = event.title
                   this.editForm.body = event.body
                   this.editForm.id = event.id
+                  this.editForm.send_minutes_before = event.how_many_minutes
                 },
                 onUpdateEvent(){
                     let date = new Date(this.editForm.date + 'T' + this.editForm.time)
@@ -247,6 +291,7 @@ import Request from '../utils/request'
                           title: this.editForm.title,
                           body: this.editForm.body,
                           date: date,
+                          how_many_minutes: this.editForm.send_minutes_before
                       }
                     },
                      ()=>{
@@ -285,6 +330,7 @@ import Request from '../utils/request'
                         title: this.addForm.title,
                         body: this.addForm.body,
                         date: date,
+                        how_many_minutes: this.addForm.send_minutes_before
                     }
                   },
                    ()=>{

@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import LoginComponent from "./components/login.vue"
 import RegComponent from "./components/reg.vue"
 import Events from "./components/events.vue"
+import SettingsComponent from './components/settings.vue'
 
 Vue.use(VueRouter)
 
@@ -23,5 +24,11 @@ export default new VueRouter({
             name: "reg",
             component: RegComponent
         },
+        {
+            path: "/settings",
+            name: "settings",
+            component: SettingsComponent
+        },
+
     ]
 })
